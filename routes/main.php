@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 
-Route::view('/', 'home.index')->name('home');
+Route::view('/', 'home.index')->name('home')->middleware('guest');
 
 Route::get('market', [MarketPlace::class, 'index'])->name('market');
 Route::get('market/{product}', [MarketPlace::class,'show'])->name('market.show');

@@ -22,9 +22,22 @@ class User extends Authenticatable
         'password', 'active',
     ];
 
+    protected $casts = ['active' => 'boolean'];
+
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+
+    public function card(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(Card::class);
+    }
+
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class);
+    }
 
     // возращает текущую Auth::user() сессию юзера
     public function getUser()
@@ -53,6 +66,7 @@ class User extends Authenticatable
     }
 
     // создаем корзину юзеру при создании юзера
+    // добавляем ему роль 'user'
     protected static function boot()
     {
         parent::boot();
@@ -61,10 +75,26 @@ class User extends Authenticatable
             $card->user_id = $user->id;
             $card->save();
         });
+
+        self::created(function ($user) {
+            $role = Role::query()->where('name', 'user')->first();
+            if ($role) {
+                $user->roles()->created_at = now();
+                $user->roles()->updated_at = now();
+                $user->roles()->attach($role);
+            }
+        });
     }
 
-    public function card(): \Illuminate\Database\Eloquent\Relations\HasOne
+    // проверка на роль у юзера
+    public function hasAnyRole($roles)
     {
-        return $this->hasOne(Card::class);
+        if (is_array($roles)) {
+            return $this->roles()->pluck('name')->intersect($roles)->count() > 0;
+        }
+
+        return $this->roles()->pluck('name')->contains($roles);
     }
+
+
 }
