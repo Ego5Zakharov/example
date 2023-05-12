@@ -27,6 +27,11 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a href="{{ route('user.card.index') }}" class="nav-link " aria-current="page">
+                        {{ __('Моя корзина') }}
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a href="{{ route('admin.products.index') }}" class="nav-link " aria-current="page">
                         {{ __('Админ-Панель') }}
                     </a>
