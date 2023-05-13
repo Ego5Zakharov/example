@@ -20,25 +20,32 @@ class CardController extends Controller
         return view('user.card.index', compact('card'));
     }
 
-    public function create($id)
+    public function create($id, Request $request)
     {
         $product = Product::findOrFail($id);
         $user = Auth::user();
-        $card = $user->card()->first();
+        $quantity = $request->input('quantity', 1);
 
-        if (!$card) {
-            $card = new Card();
-            $card->user_id = $user->id;
-            $card->save();
+        $card = $user->card;
+
+        if ($card) {
+            if (!$card->products->contains($product)) {
+                $card->products()->attach($product, ['quantity' => $quantity]);
+            } else {
+                $existingQuantity = $card->products->find($product)->pivot->quantity;
+                $newQuantity = $existingQuantity + $quantity;
+                $card->products()->updateExistingPivot($product, ['quantity' => $newQuantity]);
+            }
         }
-
-        $card->products()->attach($product);
-
         return redirect()->route('user.card.index');
     }
 
     public function delete($id)
     {
+//        $cardItem = Auth::user()->card()->first()->products()->findOrFail($id);
+//
+//        $cardItem->pivot->delete();
+
         $user = Auth::user();
         $card = $user->card()->first();
         if ($card) {

@@ -2,12 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\Product;
-use App\Models\ProductCard;
-use App\Models\Role;
-use App\Models\RoleUser;
-use Database\Factories\ProductFactory;
-use Database\Factories\RoleUserFactory;
+use App\Models\Roles\Role;
+use App\Models\Roles\RoleUser;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder

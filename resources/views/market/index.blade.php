@@ -21,13 +21,27 @@
                                                 <h5 class="card-title"><a class="text-decoration-none"
                                                                           href="{{route('market.show',$product->id)}}">{{$product->name}}</a>
                                                 </h5>
+
                                                 <p class="card-text">{{ $product->description }}</p>
+
                                                 <p class="card-text">Цена: {{ $product->price }}</p>
-                                                {{--                                                <p class="card-text">{{ $product->published_at?->format('d.m.Y H:i:s') }}</p>--}}
-                                                <form action="{{route('user.card.create',$product->id)}}" method="POST">
+
+                                                <p class="card-text">На складе: {{ $product->stock }}</p>
+
+                                                <form action="{{ route('user.card.create', $product->id) }}"
+                                                      method="POST">
+
                                                     @csrf
-                                                    <button class="border">Добавить в корзину</button>
+
+                                                    <div class="input-group">
+                                                        <input type="number" name="quantity" value="1" min="1"
+                                                               class="form-control" required>
+                                                        <button
+                                                            type="submit" class="btn btn-primary">Добавить в корзину
+                                                        </button>
+                                                    </div>
                                                 </form>
+
                                             </div>
                                         </div>
                                     </div>

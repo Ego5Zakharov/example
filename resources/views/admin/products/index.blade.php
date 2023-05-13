@@ -27,6 +27,7 @@
                                                 </h5>
                                                 <p class="card-text">{{ $product->description }}</p>
                                                 <p class="card-text">Цена: {{ $product->price }}</p>
+                                                <p class="card-text">На складе: {{ $product->stock }}</p>
                                                 {{--                                                <p class="card-text">{{ $product->published_at?->format('d.m.Y H:i:s') }}</p>--}}
                                             </div>
                                         </div>

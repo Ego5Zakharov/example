@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
+use MongoDB\Driver\Query;
 
 class Card extends Model
 {
@@ -16,7 +18,7 @@ class Card extends Model
 
     public function products()
     {
-        return $this->belongsToMany(Product::class);
+        return $this->belongsToMany(Product::class)->withPivot('quantity')->withPivot('total_price');
     }
 
     public function user()
@@ -24,4 +26,33 @@ class Card extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function getCardSum()
+    {
+        $user = Auth::user();
+        $products = $user->card->products()->get();
+
+        return number_format($this->products()->sum('total_price'),0,'','');
+    }
+
+    public function getProductTotalPriceCard($productId)
+    {
+        $product = $this->products()->find($productId);
+
+        if ($product) {
+            $totalPrice = $product->price * $product->pivot->quantity;
+            $this->products()->updateExistingPivot($productId, ['total_price' => $totalPrice]);
+            $product->save();
+            return $totalPrice;
+        }
+        return 0;
+    }
+
+    public
+    function getProductQuantity($productId)
+    {
+        $product = $this->products()->find($productId);
+        if ($product) {
+            return $product->pivot->quantity;
+        }
+    }
 }

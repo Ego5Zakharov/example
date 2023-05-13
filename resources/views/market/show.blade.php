@@ -8,7 +8,7 @@
         <div class="row justify-content-center">
 
             <div class="col-lg-8">
-                <a href="{{ route('admin.products.index') }}" class="text-decoration-none">{{ __('Назад') }}</a>
+                <a href="{{ route('market') }}" class="text-decoration-none">{{ __('Назад') }}</a>
 
                 <div class="card">
                     <div class="card-body">

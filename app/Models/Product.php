@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 
 class Product extends Model
@@ -12,17 +13,17 @@ class Product extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 'description',
+        'name', 'description', 'stock',
         'price', 'image',
         'published', 'published_at',
     ];
 
     protected $casts = [
         'user_id' => 'integer',
+        'stock' => 'integer',
         'published' => 'boolean',
         'published_at' => 'datetime'
     ];
-
 
     public static function getRules(Request $request)
     {
@@ -36,25 +37,34 @@ class Product extends Model
         ]);
     }
 
-    public function setProductImageWithModel(Product $product)
-    {
-        $imageUrl = asset('storage/' . $product->image);
-        $product->image = $imageUrl;
-        return $product;
-    }
-
-    public function setProductImageWithId(int $id)
-    {
-        $product = Product::query()->findOrFail($id);
-
-        $imageUrl = asset('storage/' . $product->image);
-        $product->image = $imageUrl;
-
-        return $product;
-    }
+//
 
     public function card()
     {
         return $this->belongsToMany(Card::class);
     }
+
+
+
+
+
 }
+
+
+
+//public function setProductImageWithModel(Product $product)
+//    {
+//        $imageUrl = asset('storage/' . $product->image);
+//        $product->image = $imageUrl;
+//        return $product;
+//    }
+//
+//    public function setProductImageWithId(int $id)
+//    {
+//        $product = Product::query()->findOrFail($id);
+//
+//        $imageUrl = asset('storage/' . $product->image);
+//        $product->image = $imageUrl;
+//
+//        return $product;
+//    }

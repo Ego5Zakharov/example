@@ -18,6 +18,7 @@
 
                             <p>{{ $product->description }}</p>
                             <p>{{ $product->price }}</p>
+                            <p class="card-text">На складе: {{ $product->stock }}</p>
 
                             <img src=" {{ asset('/storage/'.$product->image) }}" alt="Product Image" class="card-img-top">
                             <p>{{ $product->published_at?->format('d.m.Y H:i:s') }}</p>

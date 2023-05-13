@@ -21,20 +21,29 @@
                                             <div class="card-body">
                                                 <h5 class="card-title">
                                                     <a class="text-decoration-none"
-                                                       href="{{route('admin.products.show',$product->id)}}">
+                                                       href="{{route('market.show',$product->id)}}">
                                                         {{$product->name}}
                                                     </a>
                                                 </h5>
                                                 <p class="card-text">{{ $product->description }}</p>
                                                 <p class="card-text">Цена: {{ $product->price }}</p>
-                                                <form action="{{route('user.card.delete', $product->id)}}" method="POST">
+                                                <p class="card-text">В
+                                                    корзине: {{ $card->getProductQuantity($product->id) }}</p>
+                                                <p class="card-text">Сумма
+                                                    товаров: {{ $card->getProductTotalPriceCard($product->id) }}</p>
+
+                                                <form action="{{route('user.card.delete', $product->id)}}"
+                                                      method="POST">
                                                     @csrf
                                                     <button class="border">Удалить</button>
                                                 </form>
                                             </div>
+
                                         </div>
                                     </div>
                                 @endforeach
+                                    <p class="card-text">Сумма
+                                        корзины: {{ $card->getCardSum() }}</p>
                             </div>
                         @endif
                     </div>

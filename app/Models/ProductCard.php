@@ -9,5 +9,6 @@ class ProductCard extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['total_price', 'quantity'];
     protected $table = 'card_product';
 }
