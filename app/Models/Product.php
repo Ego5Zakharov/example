@@ -24,6 +24,22 @@ class Product extends Model
         'published_at' => 'datetime'
     ];
 
+    public function card()
+    {
+        return $this->belongsToMany(Card::class);
+    }
+
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class);
+    }
+
+    public function feedbacks()
+    {
+        return $this->hasMany(Feedback::class);
+    }
+
+
     public static function getRules(Request $request)
     {
         return $request->validate([
@@ -37,16 +53,6 @@ class Product extends Model
     }
 
 
-    public function card()
-    {
-        return $this->belongsToMany(Card::class);
-    }
-
-    public function categories()
-    {
-        return $this->belongsToMany(Category::class);
-    }
-
 // User->Card()->Products->Categories->Subcategories()
     public function getCategories($productId)
     {
@@ -57,19 +63,3 @@ class Product extends Model
 
 
 
-//public function setProductImageWithModel(Product $product)
-//    {
-//        $imageUrl = asset('storage/' . $product->image);
-//        $product->image = $imageUrl;
-//        return $product;
-//    }
-//
-//    public function setProductImageWithId(int $id)
-//    {
-//        $product = Product::query()->findOrFail($id);
-//
-//        $imageUrl = asset('storage/' . $product->image);
-//        $product->image = $imageUrl;
-//
-//        return $product;
-//    }

@@ -43,21 +43,20 @@
                                                         {{ $category->name }}
                                                     @endforeach</p>
 
+                                                <p class="card-text">На складе: {{ $product->stock }}</p>
 
-                                                    <p class="card-text">На складе: {{ $product->stock }}</p>
+                                                <form action="{{ route('user.card.create', $product->id) }}"
+                                                      method="POST">
+                                                    @csrf
 
-                                                    <form action="{{ route('user.card.create', $product->id) }}"
-                                                          method="POST">
-                                                        @csrf
-
-                                                        <div class="input-group">
-                                                            <input type="number" name="quantity" value="1" min="1"
-                                                                   class="form-control" required>
-                                                            <button
-                                                                type="submit" class="btn btn-primary">Добавить в корзину
-                                                            </button>
-                                                        </div>
-                                                    </form>
+                                                    <div class="input-group">
+                                                        <input type="number" name="quantity" value="1" min="1"
+                                                               class="form-control" required>
+                                                        <button
+                                                            type="submit" class="btn btn-primary">Добавить в корзину
+                                                        </button>
+                                                    </div>
+                                                </form>
 
                                             </div>
                                         </div>

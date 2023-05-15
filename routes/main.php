@@ -17,7 +17,8 @@ Route::view('/', 'home.index')->name('home')->middleware();
 
 Route::get('market', [MarketController::class, 'index'])->name('market');
 Route::get('market/{product}', [MarketController::class, 'show'])->name('market.show');
-Route::get('market', [MarketController::class, 'index'])->name('market');
+Route::post('market/{product}/feedback', [MarketController::class, 'feedback'])->name('market.feedback');
+
 
 Route::get('register', [RegisterController::class, 'index'])->name('register');
 Route::post('store,', [RegisterController::class, 'store'])->name('register.store');
