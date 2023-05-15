@@ -31,7 +31,7 @@ class Card extends Model
         $user = Auth::user();
         $products = $user->card->products()->get();
 
-        return number_format($this->products()->sum('total_price'),0,'','');
+        return number_format($this->products()->sum('total_price'), 0, '', '');
     }
 
     public function getProductTotalPriceCard($productId)

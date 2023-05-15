@@ -26,32 +26,49 @@ class CardController extends Controller
         $user = Auth::user();
         $quantity = $request->input('quantity', 1);
 
+        if ($quantity > $product->stock) {
+            return back();
+        }
+
         $card = $user->card;
 
-        if ($card) {
-            if (!$card->products->contains($product)) {
-                $card->products()->attach($product, ['quantity' => $quantity]);
-            } else {
-                $existingQuantity = $card->products->find($product)->pivot->quantity;
-                $newQuantity = $existingQuantity + $quantity;
-                $card->products()->updateExistingPivot($product, ['quantity' => $newQuantity]);
-            }
+
+        if (!$card->products->contains($product)) {
+            $card->products()->attach($product, ['quantity' => $quantity]);
+
+            $product->stock = $product->stock - $quantity;
+
+
+            $product->save();
+        } else {
+            $existingQuantity = $card->products->find($product)->pivot->quantity;
+            $newQuantity = $existingQuantity + $quantity;
+            $card->products()->updateExistingPivot($product, ['quantity' => $newQuantity]);
+
+            $product->stock = $product->stock - $quantity;
+            $product->save();
         }
+
         return redirect()->route('user.card.index');
     }
 
     public function delete($id)
     {
-//        $cardItem = Auth::user()->card()->first()->products()->findOrFail($id);
-//
-//        $cardItem->pivot->delete();
-
         $user = Auth::user();
         $card = $user->card()->first();
+
         if ($card) {
+            $product = $card->products()->findOrFail($id);
+
+            // в корзине
+            $productQuantity = $product->pivot->quantity;
+
+            // добавление к количества продукта при удалении из корзины
+            $product->stock += $productQuantity;
+            $product->save();
+
             $card->products()->detach($id);
         }
-
         return redirect()->route('user.card.index');
     }
 }
