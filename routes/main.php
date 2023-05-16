@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MarketController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\RegisterController;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -17,8 +18,6 @@ Route::view('/', 'home.index')->name('home')->middleware();
 
 Route::get('market', [MarketController::class, 'index'])->name('market');
 Route::get('market/{product}', [MarketController::class, 'show'])->name('market.show');
-Route::post('market/{product}/feedback', [MarketController::class, 'feedback'])->name('market.feedback');
-
 
 Route::get('register', [RegisterController::class, 'index'])->name('register');
 Route::post('store,', [RegisterController::class, 'store'])->name('register.store');
@@ -28,7 +27,7 @@ Route::post('store', [LoginController::class, 'store'])->name('login.store');
 
 Route::post('login/logout', [LoginController::class, 'logout'])->name('login.logout');
 
-
+//Route::get('payment', [PaymentController::class, 'paymentProcess'])->name('payment.index');
 
 
 //Route::get('/', function () {

@@ -31,35 +31,13 @@ class MarketController extends Controller
     {
         $user = Auth::user();
 
-
         $product = Product::query()->findOrFail($id);
         $feedbacks = $product->feedbacks;
 
         $hasFeedback = $feedbacks->contains('user_id', $user->id);
 
         $product = Product::query()->findOrFail($id);
-        return view('market.show', compact('product', 'feedbacks', 'hasFeedback'));
-    }
-
-    public function feedback(Request $request, Product $product)
-    {
-
-        $validated = $request->validate([
-                'comment' => ['required', 'string', 'min:10', 'max:50'],
-                'rating' => ['required', 'numeric', 'min:1', 'max:5'],
-            ]
-        );
-
-        $feedback = new Feedback;
-
-        $feedback->comment = $validated['comment'];
-        $feedback->rating = $validated['rating'];
-
-        $feedback->user_id = auth()->user()->id;
-        $product->feedbacks()->save($feedback);
-
-
-        return redirect()->back()->with('success', 'Thank you for rating the product.');
+        return view('market.show', compact('product', 'feedbacks', 'hasFeedback', 'user'));
     }
 
     // TODO: лайки, комментарии, теги

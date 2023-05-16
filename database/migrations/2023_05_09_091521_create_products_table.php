@@ -22,10 +22,6 @@ class CreateProductsTable extends Migration
             $table->boolean('published')->default(true);
 
             $table->foreignId('card_id')->nullable()->constrained();
-
-            // category
-            // tag
-            // brand
         });
     }
 
